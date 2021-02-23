@@ -2,6 +2,7 @@
 
 void * MemoryAlloc::AllocMem(size_t nSize)
 {
+	std::lock_guard < std::mutex > lockGuard(_mutex);
 	MemoryBlock* pReturn = nullptr;
 	if (nullptr == _pHeader) {
 		pReturn = (MemoryBlock*) malloc(nSize + sizeof(MemoryBlock));
@@ -24,7 +25,9 @@ void MemoryAlloc::FreeMem(void * pMem)
 {
 	MemoryBlock * pBlock = (MemoryBlock*) ((char*)pMem - sizeof(MemoryBlock));
 	assert(1 == pBlock->_nRef);
+
 	if (pBlock->_bPool) {
+		std::lock_guard<std::mutex> lockGuard(_mutex);
 		pBlock->_nRef = 0;
 		pBlock->_pNext = _pHeader;
 		_pHeader = pBlock;

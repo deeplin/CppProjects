@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <mutex>
 #include "MemoryBlock.h"
 
 class MemoryBlock;
@@ -17,6 +18,7 @@ protected:
 	MemoryBlock* _pHeader;
 	//ÄÚ´æ³ØµØÖ·
 	char* _pBuf;
+	std::mutex _mutex;
 public:
 	MemoryAlloc() :_pBuf(nullptr), _pHeader(nullptr), _nSize(0), _nBlockSize(0) {
 	}
