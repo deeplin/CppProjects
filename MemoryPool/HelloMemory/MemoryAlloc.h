@@ -23,7 +23,7 @@ public:
 	MemoryAlloc() :_pBuf(nullptr), _pHeader(nullptr), _nSize(0), _nBlockSize(0) {
 	}
 
-	virtual ~MemoryAlloc() {
+	~MemoryAlloc() {
 		if (_pBuf) {
 			free(_pBuf);
 		}

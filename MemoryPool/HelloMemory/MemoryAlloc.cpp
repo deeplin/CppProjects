@@ -48,9 +48,9 @@ void MemoryAlloc::InitMemory()
 	_pHeader->_nId = 0;
 	_pHeader->_nRef = 0;
 	_pHeader->_pMemoryAlloc = this;
-
+	_pHeader->_pNext = nullptr;
 	MemoryBlock* pCurrentBlock = _pHeader;
-	for (int i = 0; i < _nBlockSize; i++)
+	for (int i = 1; i < _nBlockSize; i++)
 	{
 		MemoryBlock* pNextBlock = (MemoryBlock*)(_pBuf + realSize * i);
 		pNextBlock->_bPool = true;

@@ -3,25 +3,25 @@
 #include <stdlib.h>
 #include "MemoryAllocator.h"
 
-#define MAX_MEMORY_SIZE 1024
+#define MAX_MEMORY_SIZE 128
 
 class MemoryMgr {
 private:
 	MemoryMgr() {
 		Init(0, 64, &_mem64);
 		Init(65, 128, &_mem128);
-		Init(129, 256, &_mem256);
-		Init(257, 512, &_mem512);
-		Init(513, 1024, &_mem1024);
+		//Init(129, 256, &_mem256);
+		//Init(257, 512, &_mem512);
+		//Init(513, 1024, &_mem1024);
 	}
 	MemoryMgr(const MemoryMgr&) = delete;
 	MemoryMgr& operator=(MemoryMgr&) = delete;
 
-	MemoryAllocator<64, 100> _mem64;
-	MemoryAllocator<128, 100> _mem128;
-	MemoryAllocator<256, 100> _mem256;
-	MemoryAllocator<512, 100> _mem512;
-	MemoryAllocator<1024, 100> _mem1024;
+	MemoryAllocator<64, 10000> _mem64;
+	MemoryAllocator<128, 10000> _mem128;
+	//MemoryAllocator<256, 100> _mem256;
+	//MemoryAllocator<512, 100> _mem512;
+	//MemoryAllocator<1024, 100> _mem1024;
 
 	MemoryAlloc* _allocArray[MAX_MEMORY_SIZE + 1];
 
