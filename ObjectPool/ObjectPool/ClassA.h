@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class ClassA : public BaseObject<ClassA>{
+class ClassA : public BaseObject<ClassA, 100>{
 public:
 	ClassA() {
 		cout << this << " class A" << endl;

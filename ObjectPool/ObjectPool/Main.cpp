@@ -8,12 +8,15 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-	ClassA* a = ClassA::NewObj();
+	ClassA * c = new ClassA;
+	delete c;
 
+	ClassA* a = ClassA::NewObj();
+	ClassA::DeleteObject(a);
 
 	ClassA* b = ClassA::NewObj(200, 300);
 
-	ClassA::DeleteObject(a);
+
 	ClassA::DeleteObject(b);
 
 	cout << "hello" << endl;

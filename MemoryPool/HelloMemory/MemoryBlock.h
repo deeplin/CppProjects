@@ -2,10 +2,14 @@
 #include "BaseMemoryPool.h"
 
 #ifdef _DEBUG
-#include <stdio.h>
-#define xPrintf(...) printf(__VA_ARGS__)
+	#ifndef xPrintf
+	#include <stdio.h>
+	#define xPrintf(...) printf(__VA_ARGS__)
+	#endif
 #else
-#define xPrintf(...)
+	#ifndef xPrintf
+	#define xPrintf(...)
+	#endif
 #endif
 
 class BaseMemoryPool;
