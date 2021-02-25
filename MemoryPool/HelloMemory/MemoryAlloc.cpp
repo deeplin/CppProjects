@@ -1,6 +1,6 @@
-#include "MemoryAlloc.h"
+#include "BaseMemoryPool.h"
 
-void * MemoryAlloc::AllocMem(size_t nSize)
+void * BaseMemoryPool::AllocMem(size_t nSize)
 {
 	std::lock_guard < std::mutex > lockGuard(_mutex);
 	MemoryBlock* pReturn = nullptr;
@@ -8,7 +8,7 @@ void * MemoryAlloc::AllocMem(size_t nSize)
 		pReturn = (MemoryBlock*) malloc(nSize + sizeof(MemoryBlock));
 		pReturn->_bPool = false;
 		pReturn->_nId = -1;
-		pReturn->_pMemoryAlloc = nullptr;
+		pReturn->_pMemoryPool = nullptr;
 		pReturn->_pNext = nullptr;
 	}
 	else {
@@ -21,7 +21,7 @@ void * MemoryAlloc::AllocMem(size_t nSize)
 	return ((char*)pReturn) + sizeof(MemoryBlock);
 }
 
-void MemoryAlloc::FreeMem(void * pMem)
+void BaseMemoryPool::FreeMem(void * pMem)
 {
 	MemoryBlock * pBlock = (MemoryBlock*) ((char*)pMem - sizeof(MemoryBlock));
 	assert(1 == pBlock->_nRef);
@@ -37,7 +37,7 @@ void MemoryAlloc::FreeMem(void * pMem)
 	}
 }
 
-void MemoryAlloc::InitMemory()
+void BaseMemoryPool::InitMemory()
 {
 	assert(nullptr == _pBuf);
 	size_t realSize = _nSize + sizeof(MemoryBlock);
@@ -47,7 +47,7 @@ void MemoryAlloc::InitMemory()
 	_pHeader->_bPool = true;
 	_pHeader->_nId = 0;
 	_pHeader->_nRef = 0;
-	_pHeader->_pMemoryAlloc = this;
+	_pHeader->_pMemoryPool = this;
 	_pHeader->_pNext = nullptr;
 	MemoryBlock* pCurrentBlock = _pHeader;
 	for (int i = 1; i < _nBlockSize; i++)
@@ -56,7 +56,7 @@ void MemoryAlloc::InitMemory()
 		pNextBlock->_bPool = true;
 		pNextBlock->_nId = i;
 		pNextBlock->_nRef = 0;
-		pNextBlock->_pMemoryAlloc = this;
+		pNextBlock->_pMemoryPool = this;
 		pCurrentBlock->_pNext = pNextBlock;
 		pNextBlock->_pNext = nullptr;
 		pCurrentBlock = pNextBlock;

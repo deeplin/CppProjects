@@ -32,16 +32,16 @@
     <ClInclude Include="MemoryMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryAllocator.h">
+    <ClInclude Include="TimeStamp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeStamp.h">
+    <ClInclude Include="BaseMemoryPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

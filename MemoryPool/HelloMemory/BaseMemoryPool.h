@@ -7,7 +7,7 @@
 
 class MemoryBlock;
 
-class MemoryAlloc
+class BaseMemoryPool
 {
 protected:
 	//ÄÚ´æ¿é´óÐ¡
@@ -20,10 +20,10 @@ protected:
 	char* _pBuf;
 	std::mutex _mutex;
 public:
-	MemoryAlloc() :_pBuf(nullptr), _pHeader(nullptr), _nSize(0), _nBlockSize(0) {
+	BaseMemoryPool() :_pBuf(nullptr), _pHeader(nullptr), _nSize(0), _nBlockSize(0) {
 	}
 
-	~MemoryAlloc() {
+	~BaseMemoryPool() {
 		if (_pBuf) {
 			free(_pBuf);
 		}

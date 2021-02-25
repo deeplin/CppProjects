@@ -165,8 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Allocate.h" />
-    <ClInclude Include="MemoryAlloc.h" />
-    <ClInclude Include="MemoryAllocator.h" />
+    <ClInclude Include="BaseMemoryPool.h" />
+    <ClInclude Include="MemoryPool.h" />
     <ClInclude Include="MemoryBlock.h" />
     <ClInclude Include="MemoryMgr.h" />
     <ClInclude Include="TimeStamp.h" />

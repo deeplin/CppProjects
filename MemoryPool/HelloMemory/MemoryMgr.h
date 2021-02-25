@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
-#include "MemoryAllocator.h"
+#include "MemoryPool.h"
 
 #define MAX_MEMORY_SIZE 128
 
@@ -17,15 +17,15 @@ private:
 	MemoryMgr(const MemoryMgr&) = delete;
 	MemoryMgr& operator=(MemoryMgr&) = delete;
 
-	MemoryAllocator<64, 10000> _mem64;
-	MemoryAllocator<128, 10000> _mem128;
-	//MemoryAllocator<256, 100> _mem256;
-	//MemoryAllocator<512, 100> _mem512;
-	//MemoryAllocator<1024, 100> _mem1024;
+	MemoryPool<64, 10000> _mem64;
+	MemoryPool<128, 10000> _mem128;
+	//MemoryPool<256, 100> _mem256;
+	//MemoryPool<512, 100> _mem512;
+	//MemoryPool<1024, 100> _mem1024;
 
-	MemoryAlloc* _allocArray[MAX_MEMORY_SIZE + 1];
+	BaseMemoryPool* _allocArray[MAX_MEMORY_SIZE + 1];
 
-	void Init(int nBegin, int nEnd, MemoryAlloc* pMemAlloc) {
+	void Init(int nBegin, int nEnd, BaseMemoryPool* pMemAlloc) {
 		for (size_t i = nBegin; i <= nEnd; i++)
 		{
 			_allocArray[i] = pMemAlloc;
@@ -48,7 +48,7 @@ public:
 			pReturn->_bPool = false;
 			pReturn->_nId = -1;
 			pReturn->_nRef = 1;
-			pReturn->_pMemoryAlloc = nullptr;
+			pReturn->_pMemoryPool = nullptr;
 			pReturn->_pNext = nullptr;
 			xPrintf("AlloMem:%llx,id=%d,size=%d\n", pReturn, pReturn->_nId, nSize);
 			return (char*)pReturn + sizeof(MemoryBlock);
@@ -60,7 +60,7 @@ public:
 		xPrintf("FreeMem:%llx,id=%d\n", pBlock, pBlock->_nId);
 		assert(1 == pBlock->_nRef);
 		if (pBlock->_bPool) {
-			pBlock->_pMemoryAlloc->FreeMem(pMem);
+			pBlock->_pMemoryPool->FreeMem(pMem);
 		}
 		else {
 			free(pBlock);

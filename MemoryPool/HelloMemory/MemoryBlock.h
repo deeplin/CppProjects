@@ -1,5 +1,5 @@
 #pragma once
-#include "MemoryAlloc.h"
+#include "BaseMemoryPool.h"
 
 #ifdef _DEBUG
 #include <stdio.h>
@@ -8,12 +8,12 @@
 #define xPrintf(...)
 #endif
 
-class MemoryAlloc;
+class BaseMemoryPool;
 
 class MemoryBlock
 {
 public:
-	MemoryAlloc* _pMemoryAlloc;
+	BaseMemoryPool* _pMemoryPool;
 	MemoryBlock* _pNext;
 	int _nId;
 	int _nRef;
