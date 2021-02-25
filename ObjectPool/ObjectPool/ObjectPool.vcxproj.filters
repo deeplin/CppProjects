@@ -32,5 +32,8 @@
     <ClInclude Include="ObjectBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimeStamp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

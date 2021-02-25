@@ -145,6 +145,7 @@
     <ClInclude Include="ClassA.h" />
     <ClInclude Include="ObjectBlock.h" />
     <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="TimeStamp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

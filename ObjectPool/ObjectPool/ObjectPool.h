@@ -69,13 +69,14 @@ public:
 			_pHeader = pReturn->_pNext;
 		}
 		pReturn->_nRef = 1;
-		//xPrintf("AlloMem:%llx,id=%d,size=%d\n", pReturn, pReturn->_nId, sizeof(T));
+		xPrintf("AllocObj:%llx,id=%d,size=%d\n", pReturn, pReturn->_nId, sizeof(T));
 		return ((char*)pReturn) + sizeof(ObjectBlock);
 	}
 
 	void FreeObj(void * pMem) {
 		ObjectBlock * pBlock = (ObjectBlock*)((char*)pMem - sizeof(ObjectBlock));
 		assert(1 == pBlock->_nRef);
+		xPrintf("FreeObj:%llx,id=%d,size=%d\n", pBlock, pBlock->_nId, sizeof(T));
 
 		if (pBlock->_bPool) {
 			std::lock_guard<std::mutex> lockGuard(_mutex);
