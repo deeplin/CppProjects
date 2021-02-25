@@ -41,7 +41,7 @@ void BaseMemoryPool::InitMemory()
 {
 	assert(nullptr == _pBuf);
 	size_t realSize = _nSize + sizeof(MemoryBlock);
-	size_t bufSize = realSize * _nBlockSize;
+	size_t bufSize = realSize * _nPoolSize;
 	_pBuf = (char*)malloc(bufSize);
 	_pHeader = (MemoryBlock*)_pBuf;
 	_pHeader->_bPool = true;
@@ -50,7 +50,7 @@ void BaseMemoryPool::InitMemory()
 	_pHeader->_pMemoryPool = this;
 	_pHeader->_pNext = nullptr;
 	MemoryBlock* pCurrentBlock = _pHeader;
-	for (int i = 1; i < _nBlockSize; i++)
+	for (int i = 1; i < _nPoolSize; i++)
 	{
 		MemoryBlock* pNextBlock = (MemoryBlock*)(_pBuf + realSize * i);
 		pNextBlock->_bPool = true;

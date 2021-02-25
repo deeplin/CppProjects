@@ -8,7 +8,7 @@ class MemoryPool : public BaseMemoryPool
 public:
 	MemoryPool() {
 		_nSize = nSize;
-		_nBlockSize = nBlockSize;
+		_nPoolSize = nBlockSize;
 		BaseMemoryPool::InitMemory();
 	}
 	~MemoryPool() = default;

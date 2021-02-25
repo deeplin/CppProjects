@@ -17,7 +17,25 @@ public:
 	}
 
 	void InitPool() {
-		asset(nullptr == _pBuf);
-		_pBuf = new char[nPoolSize*(sizeof(ObjectBlock) + sizeof(T)];
+		assert(nullptr == _pBuf);
+		size_t realSize = sizeof(ObjectBlock) + sizeof(T);
+		size_t bufSize = realSize * nPoolSize;
+		_pBuf = (char*)malloc(bufSize);
+		_pHeader = (ObjectBlock*)_pBuf;
+		_pHeader->_bPool = true;
+		_pHeader->_nId = 0;
+		_pHeader->_nRef = 0;
+		_pHeader->_pNext = nullptr;
+		ObjectBlock* pCurrentBlock = _pHeader;
+		for (int i = 1; i < nPoolSize; i++)
+		{
+			ObjectBlock* pNextBlock = (ObjectBlock*)(_pBuf + realSize * i);
+			pNextBlock->_bPool = true;
+			pNextBlock->_nId = i;
+			pNextBlock->_nRef = 0;
+			pCurrentBlock->_pNext = pNextBlock;
+			pNextBlock->_pNext = nullptr;
+			pCurrentBlock = pNextBlock;
+		}
 	}
 };

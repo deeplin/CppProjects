@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "ClassA.h"
+#include "ObjectPool.h"
+
 using namespace std;
 
 int main(int argc, char** argv) {
