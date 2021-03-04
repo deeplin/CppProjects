@@ -228,7 +228,7 @@ static void heapSort2(int a[], int len) {
 	for (int i = len / 2; i >= 0; i--) {
 		adjustHeap2(a, i, len);
 	}
-	for (int i = len -1; i >=0; i--) {
+	for (int i = len - 1; i >= 0; i--) {
 		swap(a[i], a[0]);
 		adjustHeap2(a, 0, i);
 	}
@@ -294,4 +294,3 @@ int main()
 	delete[] a;
 	std::cout << "Hello World!\n";
 }
-
