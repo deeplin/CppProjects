@@ -1,14 +1,4 @@
-// Sort.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
-#include <random>
-#include <time.h>
-#include <chrono>
-
-using namespace std;
-
-constexpr auto MAX = 100;
+#include "Sort.h"
 
 chrono::steady_clock::time_point _startTime;
 
@@ -52,20 +42,11 @@ void BubleSort(int data[], int nLen) {
 	StartClock(data, MAX);
 	for (bool sorted = false; sorted = !sorted; nLen--) {
 		for (int i = 1; i < nLen; i++) {
-			if (data[i-1] > data[i]) {
+			if (data[i - 1] > data[i]) {
 				Swap(data[i - 1], data[i]);
 				sorted = false;
 			}
 		}
 	}
 	EndClock("Buble", data, MAX);
-}
-
-int main()
-{
-	int data[MAX];
-
-	BubleSort(data, MAX);
-
-    std::cout << "Hello World!\n";
 }
