@@ -6,29 +6,28 @@
 using namespace std;
 
 class AsyncSemaphore {
-private:
-	mutex _mutex;
-	condition_variable _cv;
-	int _wait = 0;
-	int _notify = 0;
 public:
 	void Wait() {
 		unique_lock <mutex> lock(_mutex);
+		cout << "sema wait" << endl;
 		if (--_wait < 0) {
-			cout << "wait start" << endl;
 			_cv.wait(lock, [this]()->bool {return _notify > 0; });
-			cout << "wait end" << endl;
 			--_notify;
 		}
 	}
 
 	void Notify() {
 		unique_lock <mutex> lock(_mutex);
+		cout << "sema notify" << endl;
 		if (++_wait <= 0) {
 			++_notify;
-			cout << "notify start" << endl;
 			_cv.notify_one();
-			cout << "notify end" << endl;
 		}
 	}
+
+private:
+	mutex _mutex;
+	condition_variable _cv;
+	int _wait = 0;
+	int _notify = 0;
 };

@@ -1,25 +1,29 @@
 #pragma once
-#include <chrono>
 
+#include <chrono>
+#include <iostream>
 #include "AsyncTaskServer.h"
 
+using namespace std;
 using namespace chrono;
 
-class AsyncLog
+class CellLog
 {
 private:
-	AsyncTaskServer _taskServer;
+	AsyncTaskServer _asyncTaskServer;
 	FILE* _logFile = nullptr;
 
-	AsyncLog() {
-		_taskServer.Start();
+	CellLog() {
+		auto id = this_thread::get_id();
+		cout << "thread start : " << id << endl;
+		_asyncTaskServer.Start();
 	}
 
 	template<typename ...Args>
 	static void WriteFile(const char* pFormat, Args ... args) {
-		AsyncLog* log = &GetInstance();
+		CellLog* log = &GetInstance();
 		if (log->_logFile) {
-			log->_taskServer.AddTask([=]() {
+			log->_asyncTaskServer.AddTask([=]() {
 				auto t = system_clock::now();
 				time_t rawTime = system_clock::to_time_t(t);
 
@@ -33,8 +37,10 @@ private:
 		}
 	}
 public:
-	~AsyncLog() {
-		_taskServer.Close();
+	~CellLog() {
+		auto id = this_thread::get_id();
+		cout << "thread exit : " << id << endl;
+		_asyncTaskServer.Close();
 		if (_logFile) {
 			fflush(_logFile);
 			fclose(_logFile);
@@ -42,9 +48,9 @@ public:
 		}
 	}
 
-	static AsyncLog& GetInstance() {
-		static AsyncLog asyncLog;
-		return asyncLog;
+	static CellLog& GetInstance() {
+		static CellLog cellLog;
+		return cellLog;
 	}
 
 	template<typename ...Args>
@@ -61,6 +67,12 @@ public:
 
 	template<typename ...Args>
 	static void Warn(const char* pFormat, Args ... args) {
+		WriteFile(pFormat, args...);
+		printf(pFormat, args...);
+	}
+
+	template<typename ...Args>
+	static void Error(const char* pFormat, Args ... args) {
 		WriteFile(pFormat, args...);
 		printf(pFormat, args...);
 	}

@@ -8,15 +8,23 @@ class AsyncThread {
 private:
 	typedef function<void(AsyncThread*)> EventCall;
 	EventCall _onRun;
-	AsyncSemaphore _asyncSemaphore;
+	EventCall _onStart;
+	EventCall _onClose;
+	AsyncSemaphore _semaphore;
 	mutex _mutex;
 	bool _isRun = false;
 
 	void OnWork() {
+		if (_onStart) {
+			_onStart(this);
+		}
 		if (_onRun) {
 			_onRun(this);
 		}
-		_asyncSemaphore.Notify();
+		if (_onClose) {
+			_onClose(this);
+		}
+		_semaphore.Notify();
 	}
 protected:
 
@@ -27,12 +35,14 @@ public:
 		Close();
 	}
 
-	void Start(EventCall onRun) {
+	void Start(EventCall onRun, EventCall onStart = nullptr, EventCall onClose = nullptr) {
 		lock_guard<mutex> lock(_mutex);
 		if (!_isRun) {
 			_isRun = true;
 
 			_onRun = onRun;
+			_onStart = onStart;
+			_onClose = onClose;
 
 			thread t(&AsyncThread::OnWork, this);
 			t.detach();
@@ -43,7 +53,7 @@ public:
 		lock_guard<mutex> lock(_mutex);
 		if (_isRun) {
 			_isRun = false;
-			_asyncSemaphore.Wait();
+			_semaphore.Wait();
 		}
 	}
 

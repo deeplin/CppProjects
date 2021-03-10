@@ -15,22 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsyncLog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AsyncTaskServer.h">
+    <ClInclude Include="AsyncMySql.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AsyncLog.cpp">
+    <ClCompile Include="AsyncMySql.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AsyncSemaphore.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AsyncThread.h">
-      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

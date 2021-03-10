@@ -7,10 +7,11 @@ using namespace std;
 bool AsyncMysql::Init()
 {
 	CellLog::GetInstance().SetLogPath("AsyncMysqlDebug.txt", "w");
-	CellLog::Info("hello test");
-	mysql = mysql_init(0);
-	if (!mysql) {
+	CellLog::Info("hello test\n");
+	getchar();
+	//mysql = mysql_init(0);
+	//if (!mysql) {
 
-	}
+	//}
 	return false;
 }
