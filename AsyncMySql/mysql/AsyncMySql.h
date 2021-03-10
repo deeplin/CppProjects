@@ -6,7 +6,9 @@
 #define ASYNCAPI __declspec(dllimport)
 #endif
 
+#include <vector>
 #include "AsyncMySqlOption.h"
+#include "AsyncDatah.h"
 
 struct MYSQL;
 struct MYSQL_RES;
@@ -37,8 +39,10 @@ namespace Async {
 
 		void FreeResult();
 
+		std::vector<AsyncData> FetchRow();
+
 	private:
 		MYSQL* _pMysql = nullptr;
-		MYSQL_RES* pResult = nullptr;
+		MYSQL_RES* _pResult = nullptr;
 	};
 }

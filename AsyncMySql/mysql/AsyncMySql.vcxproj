@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncDatah.h" />
     <ClInclude Include="AsyncMySql.h" />
     <ClInclude Include="AsyncMySqlOption.h" />
   </ItemGroup>

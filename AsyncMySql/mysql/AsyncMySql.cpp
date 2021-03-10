@@ -77,8 +77,8 @@ namespace Async {
 	bool AsyncMySql::StoreResult()
 	{
 		FreeResult();
-		pResult = mysql_store_result(_pMysql);
-		if (!pResult) {
+		_pResult = mysql_store_result(_pMysql);
+		if (!_pResult) {
 			AsyncLog::Error("Mysql store result failed. %s\n", mysql_error(_pMysql));
 			return false;
 		}
@@ -87,8 +87,8 @@ namespace Async {
 	bool AsyncMySql::UseResult()
 	{
 		FreeResult();
-		pResult = mysql_use_result(_pMysql);
-		if (!pResult) {
+		_pResult = mysql_use_result(_pMysql);
+		if (!_pResult) {
 			AsyncLog::Error("Mysql use result failed. %s\n", mysql_error(_pMysql));
 			return false;
 		}
@@ -96,9 +96,28 @@ namespace Async {
 	}
 	void AsyncMySql::FreeResult()
 	{
-		if (pResult) {
-			mysql_free_result(pResult);
-			pResult = nullptr;
+		if (_pResult) {
+			mysql_free_result(_pResult);
+			_pResult = nullptr;
 		}
+	}
+	std::vector<AsyncData> AsyncMySql::FetchRow()
+	{
+		std::vector<AsyncData> result;
+		if (!_pResult) {
+			return result;
+		}
+		MYSQL_ROW row = mysql_fetch_row(_pResult);
+		if (!row) {
+			return result;
+		}
+
+		int fieldNum = mysql_num_fields(_pResult);
+		for (int i = 0; i < fieldNum; i++) {
+			AsyncData asyncData;
+			asyncData.pData = row[i];
+			result.push_back(asyncData);
+		}
+		return result;
 	}
 }
