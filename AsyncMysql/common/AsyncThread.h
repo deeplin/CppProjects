@@ -4,66 +4,68 @@
 #include <functional>
 #include "AsyncSemaphore.h"
 
-class AsyncThread {
-private:
-	typedef function<void(AsyncThread*)> EventCall;
-	EventCall _onRun;
-	EventCall _onStart;
-	EventCall _onClose;
-	AsyncSemaphore _semaphore;
-	mutex _mutex;
-	bool _isRun = false;
+namespace Async {
+	class AsyncThread {
+	private:
+		typedef function<void(AsyncThread*)> EventCall;
+		EventCall _onRun;
+		EventCall _onStart;
+		EventCall _onClose;
+		AsyncSemaphore _semaphore;
+		mutex _mutex;
+		bool _isRun = false;
 
-	void OnWork() {
-		if (_onStart) {
-			_onStart(this);
+		void OnWork() {
+			if (_onStart) {
+				_onStart(this);
+			}
+			if (_onRun) {
+				_onRun(this);
+			}
+			if (_onClose) {
+				_onClose(this);
+			}
+			_semaphore.Notify();
 		}
-		if (_onRun) {
-			_onRun(this);
+	protected:
+
+	public:
+		AsyncThread() = default;
+
+		~AsyncThread() = default;
+
+		void Start(EventCall onRun, EventCall onStart = nullptr, EventCall onClose = nullptr) {
+			lock_guard<mutex> lock(_mutex);
+			if (!_isRun) {
+				_isRun = true;
+
+				_onRun = onRun;
+				_onStart = onStart;
+				_onClose = onClose;
+
+				thread t(&AsyncThread::OnWork, this);
+				t.detach();
+			}
 		}
-		if (_onClose) {
-			_onClose(this);
+
+		void Close() {
+			lock_guard<mutex> lock(_mutex);
+			if (_isRun) {
+				_isRun = false;
+				//todo
+				//_semaphore.Wait();
+			}
 		}
-		_semaphore.Notify();
-	}
-protected:
 
-public:
-	AsyncThread() = default;
-
-	~AsyncThread() = default;
-
-	void Start(EventCall onRun, EventCall onStart = nullptr, EventCall onClose = nullptr) {
-		lock_guard<mutex> lock(_mutex);
-		if (!_isRun) {
-			_isRun = true;
-
-			_onRun = onRun;
-			_onStart = onStart;
-			_onClose = onClose;
-
-			thread t(&AsyncThread::OnWork, this);
-			t.detach();
+		void ExitInThread() {
+			std::lock_guard<std::mutex> lock(_mutex);
+			if (_isRun) {
+				_isRun = false;
+			}
 		}
-	}
 
-	void Close() {
-		lock_guard<mutex> lock(_mutex);
-		if (_isRun) {
-			_isRun = false;
-			//todo
-			//_semaphore.Wait();
+		bool IsRun() {
+			return _isRun;
 		}
-	}
-
-	void ExitInThread() {
-		std::lock_guard<std::mutex> lock(_mutex);
-		if (_isRun) {
-			_isRun = false;
-		}
-	}
-
-	bool IsRun() {
-		return _isRun;
-	}
-};
+	};
+}

@@ -1,17 +1,34 @@
-// TestMyAql.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include "AsyncMySql.h"
 #include "AsyncLog.h"
+
+#include <iostream>
+
+using namespace Async;
 
 int main()
 {
 	AsyncMySql mysql;
 	mysql.Init();
+	mysql.SetConnectionTimeout(3);
+	mysql.SetReconnect();
+	mysql.Connect("192.168.2.11", "root", "Deeplin-123456", "asyncDB");
 
-	//AsyncLog::GetInstance().SetLogPath("AsyncMySqlDebug.txt", "w");
-	//AsyncLog::Info("test async debug2");
+	string sql = "CREATE TABLE IF NOT EXISTS `t_video` ( \
+								`id` int AUTO_INCREMENT, \
+								`name` varchar(1024), \
+								`data` blob, \
+								`size` int, \
+								PRIMARY KEY(`id`))";
+
+	sql = "select * from t_videl";
+
+	while (true) {
+		this_thread::sleep_for(chrono::milliseconds(1000));
+		int ret = mysql.Query(sql.c_str());
+
+		cout << ret << endl;
+	}
 
 
 	mysql.Close();

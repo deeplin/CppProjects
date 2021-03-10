@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncMySql.h" />
+    <ClInclude Include="AsyncMySqlOption.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncMySql.cpp" />

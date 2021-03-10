@@ -18,6 +18,9 @@
     <ClInclude Include="AsyncMySql.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AsyncMySqlOption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsyncMySql.cpp">

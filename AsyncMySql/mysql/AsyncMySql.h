@@ -6,15 +6,31 @@
 #define ASYNCAPI __declspec(dllimport)
 #endif
 
+#include "AsyncMySqlOption.h"
+
 struct MYSQL;
 
-class ASYNCAPI AsyncMySql
-{
-public:
-	bool Init();
+namespace Async {
 
-	void Close();
+	class ASYNCAPI AsyncMySql
+	{
+	public:
+		bool Init();
 
-private:
-	MYSQL* _pMysql = nullptr;
-};
+		void Close();
+
+		bool Connect(const char* pHost, const char* pUser, const char* pPassword, const char* pDb,
+			unsigned int port = 3306, unsigned long flag = 0);
+
+		bool Query(const char* pSql, unsigned long len = 0);
+
+		bool Options(AsyncMysqlOption option, const void* arg);
+
+		bool SetConnectionTimeout(int second);
+
+		bool SetReconnect(bool isReconnect = true);
+
+	private:
+		MYSQL* _pMysql = nullptr;
+	};
+}
