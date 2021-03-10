@@ -16,7 +16,7 @@ private:
 	}
 
 	template<typename ...Args>
-	static void WriteFile(const char* pFormat, Args ... args) {
+	static void WriteFile(const char* pLevel, const char* pFormat, Args ... args) {
 		AsyncLog* log = &GetInstance();
 		if (log->_logFile) {
 			log->_taskServer.AddTask([=]() {
@@ -25,7 +25,7 @@ private:
 
 				struct tm now;
 				gmtime_s(&now, &rawTime);
-				fprintf(log->_logFile, "%s", "Info ");
+				fprintf(log->_logFile, "%s", pLevel);
 				fprintf(log->_logFile, "[%d-%d-%d %d:%d:%d]", now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec);
 				fprintf(log->_logFile, pFormat, args...);
 				fflush(log->_logFile);
@@ -34,7 +34,6 @@ private:
 	}
 public:
 	~AsyncLog() {
-		//todo 
 		_taskServer.Close();
 		if (_logFile) {
 			fflush(_logFile);
@@ -50,19 +49,25 @@ public:
 
 	template<typename ...Args>
 	static void Debug(const char* pFormat, Args ... args) {
-		WriteFile(pFormat, args...);
+		WriteFile("Debug", pFormat, args...);
 		printf(pFormat, args...);
 	}
 
 	template<typename ...Args>
 	static void Info(const char* pFormat, Args ... args) {
-		WriteFile(pFormat, args...);
+		WriteFile("Info", pFormat, args...);
 		printf(pFormat, args...);
 	}
 
 	template<typename ...Args>
 	static void Warn(const char* pFormat, Args ... args) {
-		WriteFile(pFormat, args...);
+		WriteFile("Warn", pFormat, args...);
+		printf(pFormat, args...);
+	}
+
+	template<typename ...Args>
+	static void Error(const char* pFormat, Args ... args) {
+		WriteFile("Error", pFormat, args...);
 		printf(pFormat, args...);
 	}
 

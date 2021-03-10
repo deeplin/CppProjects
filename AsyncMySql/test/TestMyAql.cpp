@@ -13,6 +13,8 @@ int main()
 	//AsyncLog::GetInstance().SetLogPath("AsyncMySqlDebug.txt", "w");
 	//AsyncLog::Info("test async debug2");
 
+
+	mysql.Close();
     std::cout << "Hello World!\n";
 	getchar();
 }

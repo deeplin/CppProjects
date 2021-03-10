@@ -100,7 +100,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;ASYNCMYSQL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AsyncMySqlDll</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -111,8 +111,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AsyncCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib;$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AsyncCommon.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;ASYNCMYSQL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AsyncMySqlDll</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -134,15 +134,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AsyncCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib;$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AsyncCommon.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;ASYNCMYSQL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AsyncMySqlDll</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -153,8 +153,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AsyncCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib;$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AsyncCommon.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +163,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;ASYNCMYSQL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AsyncMySqlDll</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -176,8 +176,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/$(TargetName).lib</ImportLibrary>
-      <AdditionalLibraryDirectories>$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AsyncCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../lib;$(SolutionDir)../../../lib/$(Platform)/$(Configuration)/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AsyncCommon.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

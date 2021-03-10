@@ -1,9 +1,20 @@
 #pragma once
 
-#include "AsyncLog.h"
+#ifdef AsyncMySqlDll
+#define ASYNCAPI __declspec(dllexport)
+#else
+#define ASYNCAPI __declspec(dllimport)
+#endif
 
-class __declspec(dllexport) AsyncMySql
+struct MYSQL;
+
+class ASYNCAPI AsyncMySql
 {
 public:
-	void Init();
+	bool Init();
+
+	void Close();
+
+private:
+	MYSQL* _pMysql = nullptr;
 };

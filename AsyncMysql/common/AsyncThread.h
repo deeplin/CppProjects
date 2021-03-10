@@ -31,9 +31,7 @@ protected:
 public:
 	AsyncThread() = default;
 
-	virtual ~AsyncThread() {
-		Close();
-	}
+	~AsyncThread() = default;
 
 	void Start(EventCall onRun, EventCall onStart = nullptr, EventCall onClose = nullptr) {
 		lock_guard<mutex> lock(_mutex);
