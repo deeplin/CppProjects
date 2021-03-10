@@ -16,7 +16,12 @@ namespace Async {
 				_size = strlen(pData);
 			}
 		}
+
+		bool LoadFile(const char* filename);
+
 		const char* _pData = nullptr;
 		uint64_t _size = 0;
+
+		void DeleteData();
 	};
 }

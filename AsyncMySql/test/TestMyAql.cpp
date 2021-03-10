@@ -26,13 +26,18 @@ int main()
 	//sql = "insert into t_video(name) value('test')";
 
 	map<string, AsyncData> sqlMap;
-	AsyncData nameData("test1");
+	AsyncData nameData("mysql.jpg");
 	sqlMap["name"] = nameData;
-	AsyncData sizeData("102");
+	AsyncData dataData;
+	dataData.LoadFile("mysql.jpg");
+	sqlMap["data"] = dataData;
+	AsyncData sizeData("1024");
 	sqlMap["size"] = sizeData;
 
 	int ret = mysql.Insert(sqlMap, "t_video");
 	cout << ret << " insert: " << sql << endl;
+
+	dataData.DeleteData();
 
 	sql = "select * from t_video";
 	ret = mysql.Query(sql.c_str());

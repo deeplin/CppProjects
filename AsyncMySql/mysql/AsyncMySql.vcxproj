@@ -24,6 +24,7 @@
     <ClInclude Include="AsyncMySqlOption.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncData.cpp" />
     <ClCompile Include="AsyncMySql.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
