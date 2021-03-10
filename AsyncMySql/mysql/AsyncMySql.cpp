@@ -21,6 +21,7 @@ namespace Async {
 
 	void AsyncMySql::Close()
 	{
+		FreeResult();
 		if (_pMysql) {
 			mysql_close(_pMysql);
 			_pMysql = nullptr;
@@ -48,7 +49,7 @@ namespace Async {
 			len = (unsigned long)strlen(pSql);
 		}
 
-		if (!mysql_real_query(_pMysql, pSql, len)) {
+		if (mysql_real_query(_pMysql, pSql, len)) {
 			AsyncLog::Error("Mysql query failed. %s\n", mysql_error(_pMysql));
 			return false;
 		}
@@ -72,5 +73,32 @@ namespace Async {
 	bool AsyncMySql::SetReconnect(bool isReconnect)
 	{
 		return Options(AsyncMysqlOption::MYSQL_OPT_RECONNECT, &isReconnect);
+	}
+	bool AsyncMySql::StoreResult()
+	{
+		FreeResult();
+		pResult = mysql_store_result(_pMysql);
+		if (!pResult) {
+			AsyncLog::Error("Mysql store result failed. %s\n", mysql_error(_pMysql));
+			return false;
+		}
+		return true;
+	}
+	bool AsyncMySql::UseResult()
+	{
+		FreeResult();
+		pResult = mysql_use_result(_pMysql);
+		if (!pResult) {
+			AsyncLog::Error("Mysql use result failed. %s\n", mysql_error(_pMysql));
+			return false;
+		}
+		return true;
+	}
+	void AsyncMySql::FreeResult()
+	{
+		if (pResult) {
+			mysql_free_result(pResult);
+			pResult = nullptr;
+		}
 	}
 }

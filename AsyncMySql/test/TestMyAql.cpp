@@ -21,14 +21,26 @@ int main()
 								`size` int, \
 								PRIMARY KEY(`id`))";
 
-	sql = "select * from t_videl";
-
+	sql = "select * from t_video";
+	//sql = "insert into t_video(name) value('test')";
 	while (true) {
-		this_thread::sleep_for(chrono::milliseconds(1000));
 		int ret = mysql.Query(sql.c_str());
-
-		cout << ret << endl;
+		cout << ret << " ";
+		mysql.StoreResult();
+		mysql.FreeResult();
+			this_thread::sleep_for(chrono::milliseconds(1000));
 	}
+
+	//ret = mysql.Query(sql.c_str());
+	//mysql.UseResult();
+	//mysql.FreeResult();
+
+	//while (true) {
+
+	//	int ret = mysql.Query(sql.c_str());
+
+	//	cout << ret << endl;
+	//}
 
 
 	mysql.Close();

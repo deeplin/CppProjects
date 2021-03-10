@@ -9,6 +9,7 @@
 #include "AsyncMySqlOption.h"
 
 struct MYSQL;
+struct MYSQL_RES;
 
 namespace Async {
 
@@ -30,7 +31,14 @@ namespace Async {
 
 		bool SetReconnect(bool isReconnect = true);
 
+		bool StoreResult();
+
+		bool UseResult();
+
+		void FreeResult();
+
 	private:
 		MYSQL* _pMysql = nullptr;
+		MYSQL_RES* pResult = nullptr;
 	};
 }
