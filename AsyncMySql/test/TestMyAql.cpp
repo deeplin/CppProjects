@@ -3,11 +3,15 @@
 
 #include <iostream>
 #include "AsyncMySql.h"
+#include "AsyncLog.h"
 
 int main()
 {
 	AsyncMySql mysql;
 	mysql.Init();
+
+	//AsyncLog::GetInstance().SetLogPath("AsyncMySqlDebug.txt", "w");
+	//AsyncLog::Info("test async debug2");
 
     std::cout << "Hello World!\n";
 	getchar();

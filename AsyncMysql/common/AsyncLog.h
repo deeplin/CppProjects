@@ -5,7 +5,7 @@
 
 using namespace chrono;
 
-class AsyncLog
+class __declspec(dllexport) AsyncLog
 {
 private:
 	AsyncTaskServer _taskServer;
@@ -34,6 +34,7 @@ private:
 	}
 public:
 	~AsyncLog() {
+		//todo 
 		_taskServer.Close();
 		if (_logFile) {
 			fflush(_logFile);

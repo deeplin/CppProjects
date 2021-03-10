@@ -2,7 +2,6 @@
 #include <list>
 #include <functional>
 #include "AsyncThread.h"
-#include <iostream>
 
 using namespace std;
 
@@ -15,7 +14,6 @@ private:
 	AsyncThread _thread;
 
 	void OnRun(AsyncThread* asyncThread) {
-		cout << "Run 1" << endl;
 		while (asyncThread->IsRun()) {
 			if (!_taskBuf.empty()) {
 				lock_guard<mutex> lockGuard(_mutex);
@@ -24,7 +22,6 @@ private:
 				}
 				_taskBuf.clear();
 			}
-			cout << "Run 2" << endl;
 			if (_tasks.empty()) {
 				this_thread::sleep_for(chrono::milliseconds(1000));
 				continue;
@@ -37,7 +34,6 @@ private:
 		for (auto task : _taskBuf) {
 			task();
 		}
-		cout << "Run 3" << endl;
 	}
 public:
 	AsyncTaskServer() = default;

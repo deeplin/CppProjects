@@ -53,7 +53,8 @@ public:
 		lock_guard<mutex> lock(_mutex);
 		if (_isRun) {
 			_isRun = false;
-			_semaphore.Wait();
+			//todo
+			//_semaphore.Wait();
 		}
 	}
 

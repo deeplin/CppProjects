@@ -1,11 +1,9 @@
 #pragma once
+
 #include "AsyncLog.h"
 
-class AsyncMySql
+class __declspec(dllexport) AsyncMySql
 {
 public:
-	void Init() {
-		AsyncLog::GetInstance().SetLogPath("AsyncMySqlDebug.txt", "w");
-		AsyncLog::Info("test async debug");
-	}
+	void Init();
 };
