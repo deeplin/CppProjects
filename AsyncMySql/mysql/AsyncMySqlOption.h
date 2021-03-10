@@ -1,7 +1,9 @@
 #pragma once
 
+#include "AsyncData.h"
+
 namespace Async {
-	enum class AsyncMysqlOption {
+	enum ASYNCAPI AsyncMysqlOption {
 		MYSQL_OPT_CONNECT_TIMEOUT,
 		MYSQL_OPT_COMPRESS,
 		MYSQL_OPT_NAMED_PIPE,

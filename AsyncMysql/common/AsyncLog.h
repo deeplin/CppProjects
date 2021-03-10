@@ -1,4 +1,11 @@
 #pragma once
+
+#ifdef AsyncMySqlDll
+#define ASYNCAPI __declspec(dllexport)
+#else
+#define ASYNCAPI __declspec(dllimport)
+#endif
+
 #include <chrono>
 
 #include "AsyncTaskServer.h"
@@ -6,7 +13,7 @@
 using namespace chrono;
 
 namespace Async {
-	class __declspec(dllexport) AsyncLog
+	class ASYNCAPI AsyncLog
 	{
 	private:
 		AsyncTaskServer _taskServer;

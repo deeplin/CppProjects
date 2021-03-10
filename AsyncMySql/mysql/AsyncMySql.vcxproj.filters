@@ -21,7 +21,7 @@
     <ClInclude Include="AsyncMySqlOption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncDatah.h">
+    <ClInclude Include="AsyncData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

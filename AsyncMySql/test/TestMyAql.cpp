@@ -3,7 +3,7 @@
 #include "AsyncLog.h"
 
 #include <iostream>
-#include "AsyncDatah.h"
+#include "AsyncData.h"
 
 using namespace Async;
 
@@ -22,21 +22,27 @@ int main()
 								`size` int, \
 								PRIMARY KEY(`id`))";
 
-	sql = "select * from t_video";
+	sql = "TRUNCATE t_video";
 	//sql = "insert into t_video(name) value('test')";
-	int ret = mysql.Query(sql.c_str());
-	cout << ret << endl;
+
+	map<string, AsyncData> sqlMap;
+	AsyncData nameData("test1");
+	sqlMap["name"] = nameData;
+	AsyncData sizeData("102");
+	sqlMap["size"] = sizeData;
+
+	int ret = mysql.Insert(sqlMap, "t_video");
+	cout << ret << " insert: " << sql << endl;
+
+	sql = "select * from t_video";
+	ret = mysql.Query(sql.c_str());
+
 	mysql.StoreResult();
 	while (true) {
 		vector<AsyncData> result = mysql.FetchRow();
 		if (result.size() == 0) break;
-		//for (int i = 0; i < result.size(); i++) {
-		//	auto data = result[i].pData;
-		//	cout << data << endl;
-		//}
-
 		for (auto iter = result.begin(); iter != result.end();iter++) {
-			auto data = iter->pData;
+			auto data = iter->_pData;
 			if (data) {
 				cout << data << " " ;
 			}

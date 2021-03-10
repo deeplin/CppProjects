@@ -1,14 +1,10 @@
 #pragma once
 
-#ifdef AsyncMySqlDll
-#define ASYNCAPI __declspec(dllexport)
-#else
-#define ASYNCAPI __declspec(dllimport)
-#endif
-
 #include <vector>
+#include <string>
+#include <map>
 #include "AsyncMySqlOption.h"
-#include "AsyncDatah.h"
+#include "AsyncData.h"
 
 struct MYSQL;
 struct MYSQL_RES;
@@ -40,6 +36,10 @@ namespace Async {
 		void FreeResult();
 
 		std::vector<AsyncData> FetchRow();
+
+		std::string GetInsertSql(std::map<std::string, AsyncData>& sqlMap, std::string tableName);
+
+		bool Insert(std::map<std::string, AsyncData>& sqlMap, std::string tableName);
 
 	private:
 		MYSQL* _pMysql = nullptr;

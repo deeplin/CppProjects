@@ -115,9 +115,52 @@ namespace Async {
 		int fieldNum = mysql_num_fields(_pResult);
 		for (int i = 0; i < fieldNum; i++) {
 			AsyncData asyncData;
-			asyncData.pData = row[i];
+			asyncData._pData = row[i];
 			result.push_back(asyncData);
 		}
 		return result;
+	}
+
+	std::string AsyncMySql::GetInsertSql(std::map<std::string, AsyncData>& sqlMap, std::string tableName)
+	{
+		string result = "";
+		if (sqlMap.empty() || tableName.empty()) {
+			return result;
+		}
+
+		result = "INSERT INTO `" + tableName;
+
+		string keys = "`(`";
+		string values = "VALUES('";
+
+		bool first = true;
+		for (auto pair : sqlMap) {
+			if (first) {
+				first = false;
+			}
+			else {
+				keys += ",`";
+				values += ",'";
+			}
+			keys += pair.first + "`";
+			values += pair.second._pData;
+			values += "'";
+		}
+		keys += ")";
+		values += ")";
+		result += keys;
+		result += values;
+		return result;;
+	}
+	bool AsyncMySql::Insert(std::map<std::string, AsyncData>& sqlMap, std::string tableName)
+	{
+		std::string sql = GetInsertSql(sqlMap, tableName);
+		if (!Query(sql.c_str())) {
+			return false;
+		}
+		if (mysql_affected_rows(_pMysql) <= 0) {
+			return false;
+		}
+		return true;
 	}
 }
