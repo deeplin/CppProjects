@@ -318,4 +318,20 @@ namespace Async {
 
 		return mysql_stmt_affected_rows(stmt);
 	}
+	bool AsyncMySql::StartTransaction()
+	{
+		return Query("SET AUTOCOMMIT=0");
+	}
+	bool AsyncMySql::StopTransaction()
+	{
+		return Query("SET AUTOCOMMIT=1");
+	}
+	bool AsyncMySql::Commmit()
+	{
+		return Query("COMMIT");
+	}
+	bool AsyncMySql::Roolback()
+	{
+		return Query("ROOLBACK");
+	}
 }

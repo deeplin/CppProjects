@@ -52,6 +52,12 @@ namespace Async {
 
 		int UpdateBinary(std::map<std::string, AsyncData>& sqlMap, std::string tableName, std::string where);
 
+		//事务接口
+		bool StartTransaction();
+		bool StopTransaction();
+		bool Commmit();
+		bool Roolback();
+
 	private:
 		MYSQL* _pMysql = nullptr;
 		MYSQL_RES* _pResult = nullptr;
