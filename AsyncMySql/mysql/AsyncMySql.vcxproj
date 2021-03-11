@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncData.h" />
+    <ClInclude Include="AsyncFieldType.h" />
     <ClInclude Include="AsyncMySql.h" />
     <ClInclude Include="AsyncMySqlOption.h" />
   </ItemGroup>

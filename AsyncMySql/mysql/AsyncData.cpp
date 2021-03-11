@@ -26,14 +26,28 @@ bool Async::AsyncData::LoadFile(const char* filename)
 	while (!in.eof()) {
 		in.read((char*)_pData + read, _size - read);
 		if (in.gcount() > 0) {
-			read += in.gcount();
+			read += (int)in.gcount();
 		}
 		else {
 			break;
 		}
 	}
 	in.close();
+	_fieldType = MYSQL_TYPE_BLOB;
+	return true;
+}
 
+bool Async::AsyncData::SaveFile(const char* filename)
+{
+	if (!_pData || _size <= 0) {
+		return false;
+	}
+	fstream out(filename, ios::out | ios::binary);
+	if (!out.is_open()) {
+		AsyncLog::Error("Mysql save file failed. %s\n", filename);
+		return false;
+	}
+	out.write(_pData, _size);
 	return true;
 }
 

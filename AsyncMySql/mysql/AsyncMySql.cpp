@@ -113,9 +113,11 @@ namespace Async {
 		}
 
 		int fieldNum = mysql_num_fields(_pResult);
+		unsigned long* length = mysql_fetch_lengths(_pResult);
 		for (int i = 0; i < fieldNum; i++) {
 			AsyncData asyncData;
 			asyncData._pData = row[i];
+			asyncData._size = length[i];
 			result.push_back(asyncData);
 		}
 		return result;
@@ -161,6 +163,70 @@ namespace Async {
 		if (mysql_affected_rows(_pMysql) <= 0) {
 			return false;
 		}
+		return true;
+	}
+	bool AsyncMySql::InsertBinary(std::map<std::string, AsyncData>& sqlMap, std::string tableName)
+	{
+		string result = "";
+		if (sqlMap.empty() || tableName.empty()) {
+			return false;
+		}
+
+		result = "INSERT INTO `" + tableName;
+
+		string keys = "`(`";
+		string values = "VALUES(";
+
+		MYSQL_BIND bind[8] = { 0 };
+		int fieldNum = 0;
+
+		bool first = true;
+		for (auto pair : sqlMap) {
+			if (first) {
+				first = false;
+			}
+			else {
+				keys += ",`";
+				values += ",";
+			}
+			keys += pair.first + "`";
+			values += "?";
+
+			bind[fieldNum].buffer = (char*) pair.second._pData;
+			bind[fieldNum].buffer_length = pair.second._size;
+			bind[fieldNum].buffer_type = (enum_field_types)pair.second._fieldType;
+			fieldNum++;
+		}
+		keys += ")";
+		values += ")";
+		result += keys;
+		result += values;
+
+		MYSQL_STMT* stmt = mysql_stmt_init(_pMysql);
+		if (!stmt) {
+			AsyncLog::Error("Mysql init STMT failed. %s\n", mysql_error(_pMysql));
+			return false;
+		}
+
+		if (mysql_stmt_prepare(stmt, result.c_str(), result.size())) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql prepare STMT failed. %s\n", mysql_error(_pMysql));
+			return false;
+		}
+
+		if (mysql_stmt_bind_param(stmt, bind) != 0) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql bind STMT failed. %s\n", mysql_stmt_error(stmt));
+			return false;
+		}
+
+		if (mysql_stmt_execute(stmt) != 0) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql execute STMT failed. %s\n", mysql_stmt_error(stmt));
+			return false;
+		}
+
+		mysql_stmt_close(stmt);
 		return true;
 	}
 }

@@ -3,7 +3,7 @@
 #include "AsyncData.h"
 
 namespace Async {
-	enum ASYNCAPI AsyncMysqlOption {
+	enum AsyncMysqlOption {
 		MYSQL_OPT_CONNECT_TIMEOUT,
 		MYSQL_OPT_COMPRESS,
 		MYSQL_OPT_NAMED_PIPE,

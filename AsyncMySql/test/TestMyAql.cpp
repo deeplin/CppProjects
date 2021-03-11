@@ -28,25 +28,30 @@ int main()
 	map<string, AsyncData> sqlMap;
 	AsyncData nameData("mysql.jpg");
 	sqlMap["name"] = nameData;
-	AsyncData dataData;
-	dataData.LoadFile("mysql.jpg");
-	sqlMap["data"] = dataData;
-	AsyncData sizeData("1024");
+	AsyncData imageData;
+	imageData.LoadFile("mysql.jpg");
+	sqlMap["data"] = imageData;
+	int size = (int)imageData._size;
+	AsyncData sizeData(&size);
 	sqlMap["size"] = sizeData;
 
-	int ret = mysql.Insert(sqlMap, "t_video");
+	int ret = mysql.InsertBinary(sqlMap, "t_video");
 	cout << ret << " insert: " << sql << endl;
 
-	dataData.DeleteData();
+	imageData.DeleteData();
 
 	sql = "select * from t_video";
 	ret = mysql.Query(sql.c_str());
 
 	mysql.StoreResult();
 	while (true) {
-		vector<AsyncData> result = mysql.FetchRow();
-		if (result.size() == 0) break;
-		for (auto iter = result.begin(); iter != result.end();iter++) {
+		vector<AsyncData> row = mysql.FetchRow();
+		if (row.size() == 0) break;
+
+		string filename = string("new").append(row[1]._pData);
+		row[2].SaveFile(filename.c_str());
+
+		for (auto iter = row.begin(); iter != row.end();iter++) {
 			auto data = iter->_pData;
 			if (data) {
 				cout << data << " " ;
@@ -62,8 +67,6 @@ int main()
 	//ret = mysql.Query(sql.c_str());
 	//mysql.UseResult();
 	//mysql.FreeResult();
-
-
 
 
 	mysql.Close();

@@ -41,6 +41,8 @@ namespace Async {
 
 		bool Insert(std::map<std::string, AsyncData>& sqlMap, std::string tableName);
 
+		bool InsertBinary(std::map<std::string, AsyncData>& sqlMap, std::string tableName);
+
 	private:
 		MYSQL* _pMysql = nullptr;
 		MYSQL_RES* _pResult = nullptr;
