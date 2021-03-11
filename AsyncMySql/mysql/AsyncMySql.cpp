@@ -69,7 +69,6 @@ namespace Async {
 	{
 		return Options(AsyncMysqlOption::MYSQL_OPT_CONNECT_TIMEOUT, &second);
 	}
-
 	bool AsyncMySql::SetReconnect(bool isReconnect)
 	{
 		return Options(AsyncMysqlOption::MYSQL_OPT_RECONNECT, &isReconnect);
@@ -122,7 +121,6 @@ namespace Async {
 		}
 		return result;
 	}
-
 	std::string AsyncMySql::GetInsertSql(std::map<std::string, AsyncData>& sqlMap, std::string tableName)
 	{
 		string result = "";
@@ -152,7 +150,7 @@ namespace Async {
 		values += ")";
 		result += keys;
 		result += values;
-		return result;;
+		return result;
 	}
 	bool AsyncMySql::Insert(std::map<std::string, AsyncData>& sqlMap, std::string tableName)
 	{
@@ -177,7 +175,7 @@ namespace Async {
 		string keys = "`(`";
 		string values = "VALUES(";
 
-		MYSQL_BIND bind[8] = { 0 };
+		MYSQL_BIND bind[MAX_FIELD] = { 0 };
 		int fieldNum = 0;
 
 		bool first = true;
@@ -228,5 +226,96 @@ namespace Async {
 
 		mysql_stmt_close(stmt);
 		return true;
+	}
+	std::string AsyncMySql::GetUpdateSql(std::map<std::string, AsyncData>& sqlMap, std::string tableName, std::string where)
+	{
+		string sql = "";
+		if (sqlMap.empty() || tableName.empty()) {
+			return sql;
+		}
+
+		sql = "UPDATE `" + tableName + "` SET ";
+
+		bool first = true;
+		for (auto pair : sqlMap) {
+			if (first) {
+				first = false;
+			}
+			else {
+				sql += ",";
+			}
+			sql += "`" + pair.first + "`='" + pair.second._pData + "'";
+		}
+		if (!where.empty()) {
+			sql += " WHERE " + where;
+		}
+		return sql;
+	}
+	int AsyncMySql::Update(std::map<std::string, AsyncData>& sqlMap, std::string tableName, std::string where)
+	{
+		string sql = GetUpdateSql(sqlMap, tableName, where);
+		cout << sql << endl;
+		if (!Query(sql.c_str())) {
+			return -1;
+		}
+		return mysql_affected_rows(_pMysql);
+	}
+	int AsyncMySql::UpdateBinary(std::map<std::string, AsyncData>& sqlMap, std::string tableName, std::string where)
+	{
+		if (sqlMap.empty() || tableName.empty()) {
+			return -1;
+		}
+
+		MYSQL_BIND bind[MAX_FIELD] = { 0 };
+		int fieldNum = 0;
+
+		string sql = "UPDATE `" + tableName + "` SET ";
+
+		bool first = true;
+		for (auto pair : sqlMap) {
+			if (first) {
+				first = false;
+			}
+			else {
+				sql += ",";
+			}
+			sql += "`" + pair.first + "`=?";
+
+			bind[fieldNum].buffer = (char*)pair.second._pData;
+			bind[fieldNum].buffer_length = pair.second._size;
+			bind[fieldNum].buffer_type = (enum_field_types)pair.second._fieldType;
+			fieldNum++;
+		}
+		if (!where.empty()) {
+			sql += " WHERE " + where;
+		}
+
+		MYSQL_STMT* stmt = mysql_stmt_init(_pMysql);
+		if (!stmt) {
+			AsyncLog::Error("Mysql init STMT failed. %s\n", mysql_error(_pMysql));
+			return -1;
+		}
+
+		if (mysql_stmt_prepare(stmt, sql.c_str(), sql.size())) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql prepare STMT failed. %s\n", mysql_error(_pMysql));
+			return false;
+		}
+
+		if (mysql_stmt_bind_param(stmt, bind) != 0) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql bind STMT failed. %s\n", mysql_stmt_error(stmt));
+			return -1;
+		}
+
+		if (mysql_stmt_execute(stmt) != 0) {
+			mysql_stmt_close(stmt);
+			AsyncLog::Error("Mysql execute STMT failed. %s\n", mysql_stmt_error(stmt));
+			return -1;
+		}
+
+		mysql_stmt_close(stmt);
+
+		return mysql_stmt_affected_rows(stmt);
 	}
 }
